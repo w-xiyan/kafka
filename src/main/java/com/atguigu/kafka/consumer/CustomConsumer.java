@@ -34,13 +34,14 @@ public class CustomConsumer {
         KafkaConsumer<String, String> kafkaConsumer = new KafkaConsumer<>(properties);
 
         // 2 订阅主题 first
+        // 注册 要消费的 主题 （可以消费多个主题
         ArrayList<String> topics = new ArrayList<>();
         topics.add("first");
         kafkaConsumer.subscribe(topics);
 
         // 3 消费数据
         while (true){
-
+                // 设置 1 s 中消费一批数据
             ConsumerRecords<String, String> consumerRecords = kafkaConsumer.poll(Duration.ofSeconds(1));
 
             for (ConsumerRecord<String, String> consumerRecord : consumerRecords) {
