@@ -47,9 +47,10 @@ public class CustomConsumerByHandSync {
                 System.out.println(consumerRecord);
             }
 
-            // 手动提交offset
+            // 同步提交offset
             kafkaConsumer.commitSync();
-            kafkaConsumer.commitAsync();
+            // 异步提交 offset
+            //kafkaConsumer.commitAsync();
         }
     }
 }

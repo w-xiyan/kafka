@@ -45,19 +45,21 @@ public class CustomConsumerSeekTime {
         // 希望把时间转换为对应的offset
         HashMap<TopicPartition, Long> topicPartitionLongHashMap = new HashMap<>();
 
-        // 封装对应集合
+        // 封装集合存储，每个分区对应一天前的数据
         for (TopicPartition topicPartition : assignment) {
             topicPartitionLongHashMap.put(topicPartition,System.currentTimeMillis() - 1 * 24 * 3600 * 1000);
         }
-
+        // 获取从 1 天前开始消费的每个分区的 offset
         Map<TopicPartition, OffsetAndTimestamp> topicPartitionOffsetAndTimestampMap = kafkaConsumer.offsetsForTimes(topicPartitionLongHashMap);
 
-        // 指定消费的offset
+        // 遍历每个分区，对每个分区设置消费时间。
         for (TopicPartition topicPartition : assignment) {
 
             OffsetAndTimestamp offsetAndTimestamp = topicPartitionOffsetAndTimestampMap.get(topicPartition);
-
-            kafkaConsumer.seek(topicPartition,offsetAndTimestamp.offset());
+            // 遍历每个分区，对每个分区设置消费时间。
+            if (offsetAndTimestamp != null ){
+                kafkaConsumer.seek(topicPartition,offsetAndTimestamp.offset());
+            }
         }
 
         // 3  消费数据

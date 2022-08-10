@@ -43,11 +43,11 @@ public class CustomConsumerSeek {
         //  保证分区分配方案已经制定完毕
         while (assignment.size() == 0){
             kafkaConsumer.poll(Duration.ofSeconds(1));
-
+            // 获取消费者分区分配信息（有了分区分配信息才能开始消费）
             assignment = kafkaConsumer.assignment();
         }
 
-        // 指定消费的offset
+        // 遍历所有分区，并指定 offset 从 600 的位置开始 消费
         for (TopicPartition topicPartition : assignment) {
             kafkaConsumer.seek(topicPartition,600);
         }
